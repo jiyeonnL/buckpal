@@ -21,6 +21,7 @@ class AccountPersistenceAdapter implements
 	private final SpringDataAccountRepository accountRepository;
 	private final ActivityRepository activityRepository;
 	private final AccountMapper accountMapper;
+	//private final AccountMapperTest accountMapperTest;
 
 	@Override
 	public Account loadAccount(
@@ -60,6 +61,7 @@ class AccountPersistenceAdapter implements
 	public void updateActivities(Account account) {
 		for (Activity activity : account.getActivityWindow().getActivities()) {
 			if (activity.getId() == null) {
+				//ActivityJpaEntity entity = accountMapperTest.domainToEntity(activity);
 				activityRepository.save(accountMapper.mapToJpaEntity(activity));
 			}
 		}

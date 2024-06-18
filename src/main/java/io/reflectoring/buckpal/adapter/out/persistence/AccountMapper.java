@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 class AccountMapper {
 
+	// entity 를 domain 으로 매핑 (AccountJpaEntity -> Account)
 	Account mapToDomainEntity(
 			AccountJpaEntity account,
 			List<ActivityJpaEntity> activities,
@@ -31,6 +32,7 @@ class AccountMapper {
 
 	}
 
+	// entity 를 domain 으로 매핑 (ActivityJpaEntity -> ActivityWindow)
 	ActivityWindow mapToActivityWindow(List<ActivityJpaEntity> activities) {
 		List<Activity> mappedActivities = new ArrayList<>();
 
@@ -47,6 +49,7 @@ class AccountMapper {
 		return new ActivityWindow(mappedActivities);
 	}
 
+	// domain 을 entity 로 매핑 (Activity -> ActivityJpaEntity)
 	ActivityJpaEntity mapToJpaEntity(Activity activity) {
 		return new ActivityJpaEntity(
 				activity.getId() == null ? null : activity.getId().getValue(),

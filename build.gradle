@@ -1,6 +1,7 @@
 plugins {
     id 'org.springframework.boot' version '3.1.0'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+//    id "com.github.akazver.mapstruct" version "1.0.6"
 }
 
 
@@ -28,6 +29,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    implementation 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
     testImplementation 'org.mockito:mockito-junit-jupiter:5.3.1'
@@ -41,4 +45,15 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+//mapstruct {
+//    suppressGeneratorTimestamp = true
+//    verbose = true
+//    suppressGeneratorVersionInfoComment = true
+//    defaultComponentModel = 'spring'
+//    defaultInjectionStrategy = 'constructor'
+//    unmappedTargetPolicy = 'ERROR'
+//    unmappedSourcePolicy = 'ERROR'
+//    disableBuilders = true
+//}
 
