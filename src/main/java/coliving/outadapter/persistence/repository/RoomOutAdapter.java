@@ -15,13 +15,14 @@ import org.springframework.stereotype.Component;
 public class RoomOutAdapter implements RoomOutPort {
 
     private final RoomRepository roomRepository;
+    private final RoomMapper roomMapper;
 
     @Override
     public List<RoomInfo> getRoomList(RoomQuery query){
         List<Room> roomList = roomRepository.findRoomList(query);
         List<RoomInfo> roomInfoList = new ArrayList<>();
         for(Room room : roomList){
-            roomInfoList.add(RoomMapper.INSTANCE.entityToInfo(room));
+            roomInfoList.add(roomMapper.entityToInfo(room));
         }
         return roomInfoList;
     }
