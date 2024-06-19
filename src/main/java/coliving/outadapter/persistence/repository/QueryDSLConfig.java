@@ -1,4 +1,4 @@
-package io.reflectoring.buckpal.adapter.out.persistence;
+package coliving.outadapter.persistence.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
