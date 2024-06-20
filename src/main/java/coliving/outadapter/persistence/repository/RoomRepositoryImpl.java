@@ -1,11 +1,12 @@
 package coliving.outadapter.persistence.repository;
 
 import coliving.data.dto.AvailableRoomQuery;
+import coliving.data.dto.ReserveRoomCommand;
 import coliving.data.dto.RoomQuery;
 import coliving.outadapter.persistence.entity.QRoom;
 import coliving.outadapter.persistence.entity.QRoomReservation;
-import coliving.outadapter.persistence.entity.Room;
-import com.querydsl.core.types.dsl.BooleanExpression;
+import coliving.outadapter.persistence.entity.ReservationEntity;
+import coliving.outadapter.persistence.entity.RoomEntity;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,16 +22,16 @@ public class RoomRepositoryImpl implements RoomRepository{
     QRoomReservation reservation = QRoomReservation.roomReservation;
 
     @Override
-    public List<Room> findRoomList(RoomQuery query) {
-        List<Room> roomList = jpaQueryFactory.selectFrom(room)
-                .where(room.status.eq(query.status()))
-                //.where(room.maximum_capacity.goe(query.maxCapacity()))
+    public List<RoomEntity> findRoomList(RoomQuery query) {
+        List<RoomEntity> roomEntityList = jpaQueryFactory.selectFrom(room)
+                .where(room.status.eq(query.status())
+                        .and(room.maxCapacity.goe(query.maxCapacity())))
                 .fetch();
-        return roomList;
+        return roomEntityList;
     }
 
     @Override
-    public List<Room> findAvailableRoomList(AvailableRoomQuery query){
+    public List<RoomEntity> findAvailableRoomList(AvailableRoomQuery query){
 
         return jpaQueryFactory.selectFrom(room)
                         .leftJoin(reservation).on(room.id.eq(reservation.roomId)
@@ -43,6 +44,29 @@ public class RoomRepositoryImpl implements RoomRepository{
                         .and(room.maxCapacity.gt(query.guestNumber()))
                         .and(room.isDeleted.eq(false)))
                 .fetch();
+    }
+
+    @Override
+    public RoomEntity findRoomById(String roomId){
+        return jpaQueryFactory.selectFrom(room).where(room.id.eq(roomId)).fetchOne();
+    }
+
+    @Override
+    public List<ReservationEntity> findReservation(String roomId, String startDate, String endDate) {
+        return jpaQueryFactory.selectFrom(reservation)
+                .where(reservation.roomId.eq(roomId)
+                        .and(reservation.startDate.lt(endDate))
+                        .and(reservation.endDate.gt(startDate)))
+                .fetch();
+    }
+
+    @Override
+    public void reserveRoom(ReserveRoomCommand command) {
+        jpaQueryFactory.insert(reservation)
+                .set(reservation.roomId, command.roomId())
+                .set(reservation.startDate, command.startDate())
+                .set(reservation.endDate, command.endDate())
+                .execute();
     }
 
 }

@@ -1,13 +1,11 @@
 package coliving.outadapter.persistence.mapper;
 
+import coliving.application.domain.Room;
 import coliving.data.dto.RoomInfo;
-import coliving.outadapter.persistence.entity.Room;
+import coliving.outadapter.persistence.entity.RoomEntity;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants.ComponentModel;
-import org.mapstruct.factory.Mappers;
-import org.springframework.stereotype.Component;
 @Mapper
 
 public interface RoomMapper {
@@ -16,6 +14,9 @@ public interface RoomMapper {
     @Mapping(source = "name", target = "roomName")
     @Mapping(source = "basicCapacity", target = "capacity")
     @BeanMapping(ignoreByDefault = true)
-    RoomInfo entityToInfo(Room room);
+    RoomInfo entityToInfo(RoomEntity roomEntity);
+
+
+    Room entityToDomain(RoomEntity roomEntity);
 
 }

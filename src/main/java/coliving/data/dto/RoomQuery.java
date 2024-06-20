@@ -1,3 +1,3 @@
 package coliving.data.dto;
 
-public record RoomQuery(String roomNumber, Integer maxCapacity, String status){}
+public record RoomQuery(Integer maxCapacity, String status){}

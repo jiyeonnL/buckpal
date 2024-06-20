@@ -16,25 +16,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/living")
+@RequestMapping("/coliving")
 @RequiredArgsConstructor
 public class RoomController {
 
     private final RoomUseCase roomUseCase;
 
     @GetMapping("/room")
-    public List<RoomInfo> getRoomList(@RequestParam String status){
-        RoomQuery query = new RoomQuery(null, null, status);
+    public List<RoomInfo> getRoomList(@RequestParam Integer maxCapacity, @RequestParam String status){
+        RoomQuery query = new RoomQuery(maxCapacity, status);
         return roomUseCase.getRoomList(query);
     }
 
-    @GetMapping("/room/reserve")
-    public List<RoomInfo> getAvailableRoomList(@RequestParam String start, String end, Integer guestNumber){
+    @GetMapping("/room/available")
+    public List<RoomInfo> getAvailableRoomList(@RequestParam String start, @RequestParam String end, @RequestParam Integer guestNumber){
         AvailableRoomQuery query = new AvailableRoomQuery(start, end, guestNumber);
         return roomUseCase.getAvailableRoomList(query);
     }
 
-    @PostMapping("/room")
+    @PostMapping("/room/reserve")
     public Room reserveRoom(@RequestBody ReserveRoomCommand command){
         return roomUseCase.reserveRoom(command);
     }

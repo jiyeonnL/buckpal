@@ -2,8 +2,8 @@ package coliving.application.service;
 
 import coliving.application.domain.Room;
 import coliving.application.inport.RoomUseCase;
-import coliving.application.outport.ReserveRoomPort;
-import coliving.application.outport.RoomOutPort;
+import coliving.application.outport.ReservationPort;
+import coliving.application.outport.LoadRoomPort;
 import coliving.data.dto.AvailableRoomQuery;
 import coliving.data.dto.ReserveRoomCommand;
 import coliving.data.dto.RoomInfo;
@@ -16,23 +16,29 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RoomService implements RoomUseCase {
 
-    private final RoomOutPort roomOutPort;
-    private final ReserveRoomPort reserveRoomPort;
+    private final LoadRoomPort loadRoomPort;
+    private final ReservationPort reservationPort;
 
     @Override
     public List<RoomInfo> getRoomList(RoomQuery query){
-        return roomOutPort.getRoomList(query);
+        return loadRoomPort.getRoomList(query);
     }
 
     @Override
     public List<RoomInfo> getAvailableRoomList(AvailableRoomQuery query){
-        return roomOutPort.getAvailableRoomList(query);
+        return loadRoomPort.getAvailableRoomList(query);
     }
 
     @Override
     public Room reserveRoom(ReserveRoomCommand command){
 
-        // 예약 가능한 상태인지 확인
+        Room room = loadRoomPort.loadRoom(command.roomId());
+        if(!room.isAvailable(command.startDate(), command.endDate(), command.guestNumber())){
+            // 예외처리
+        }
+
+        reservationPort.reserveRoom(command);
+
 
 
 

@@ -12,7 +12,7 @@ import lombok.ToString;
 @Entity
 @ToString
 @Table(name = "Room")
-public class Room {
+public class RoomEntity {
 
     @Id
     private String id;
