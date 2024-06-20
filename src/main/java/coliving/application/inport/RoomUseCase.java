@@ -1,16 +1,19 @@
 package coliving.application.inport;
 
+import coliving.application.domain.Room;
+import coliving.data.dto.AvailableRoomQuery;
+import coliving.data.dto.ReserveRoomCommand;
 import coliving.data.dto.RoomInfo;
 import coliving.data.dto.RoomQuery;
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 public interface RoomUseCase {
 
-    List<RoomInfo> getRoomList(@RequestParam RoomQuery query);
+    List<RoomInfo> getRoomList(RoomQuery query);
+
+    List<RoomInfo> getAvailableRoomList(AvailableRoomQuery query);
+
+    Room reserveRoom(ReserveRoomCommand command);
 
 
 }

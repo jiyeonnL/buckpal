@@ -1,6 +1,8 @@
 package coliving.outadapter.persistence.repository;
 
+import coliving.application.outport.ReserveRoomPort;
 import coliving.application.outport.RoomOutPort;
+import coliving.data.dto.AvailableRoomQuery;
 import coliving.data.dto.RoomInfo;
 import coliving.data.dto.RoomQuery;
 import coliving.outadapter.persistence.entity.Room;
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RoomOutAdapter implements RoomOutPort {
+public class RoomOutAdapter implements RoomOutPort, ReserveRoomPort {
 
     private final RoomRepository roomRepository;
     private final RoomMapper roomMapper;
@@ -27,4 +29,19 @@ public class RoomOutAdapter implements RoomOutPort {
         return roomInfoList;
     }
 
+    @Override
+    public List<RoomInfo> getAvailableRoomList(AvailableRoomQuery query){
+        List<Room> roomList = roomRepository.findAvailableRoomList(query);
+        List<RoomInfo> roomInfoList = new ArrayList<>();
+        for(Room room : roomList){
+            roomInfoList.add(roomMapper.entityToInfo(room));
+        }
+        return roomInfoList;
+    }
+
+
+    @Override
+    public void reserveRoom(String roomId) {
+
+    }
 }
